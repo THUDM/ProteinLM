@@ -1,0 +1,11 @@
+__pycache__
+logs/
+scripts/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# helpers.so for data processing
+helpers.*.so
