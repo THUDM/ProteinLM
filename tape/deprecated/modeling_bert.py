@@ -1,8 +1,9 @@
 # coding=utf-8
+# Copyright (c) 2021, Knowledge Engineering Group (KEG), Tsinghua University
+# Modified by Yijia Xiao
+# 
 # Copyright 2018 The Google AI Language Team Authors and The HuggingFace Inc. team.
 # Copyright (c) 2018, NVIDIA CORPORATION.  All rights reserved.
-# BAAI: Large Scale Protein-Pretrain
-# Modified by Yijia Xiao
 # Modified by Roshan Rao
 #
 # Licensed under the Apache License, Version 2.0 (the "License");

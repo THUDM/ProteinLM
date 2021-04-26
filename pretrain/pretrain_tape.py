@@ -1,5 +1,7 @@
 # coding=utf-8
 # Copyright (c) 2020, NVIDIA CORPORATION.  All rights reserved.
+# Copyright (c) 2021, Knowledge Engineering Group (KEG), Tsinghua University
+# Modified by Jiezhong Qiu
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -87,11 +89,6 @@ def get_batch(data_iterator):
         tokenizer.cls,
         reset_position_ids=True,
         reset_attention_mask=True)
-
-    #print("tokens", tokens[0].cpu().numpy().tolist()) 
-    #print("position_ids", position_ids[0].cpu().numpy().tolist())
-    #print(position_ids[tokens == tokenizer.cls].cpu().numpy().tolist())
-    #print(padding_mask[0].cpu().numpy().tolist())
 
     return tokens, loss_mask, lm_labels, padding_mask, attention_mask, position_ids
 

@@ -44,13 +44,13 @@ Detailed explanations are given in each folder's readme.
 
 # Downstream Tasks Performance
 
-| Task | Metric | Performance |
-|:-:|:-:|:-:|
-| contact prediction  | P@L/5               | 0.52 |
-| remote_homology     | Top 1 Accuracy      | 0.26 |
-| secondary_structure | Accuracy (3-class)  | 0.75 |
-| fluorescence        | Spearman's rho      | 0.68 |
-| stability           | Spearman's rho      | 0.77 |
+| Task | Metric | TAPE Transformer | ProteinLM (ours) |
+|:-:|:-:|:-:|:-:|
+| contact prediction  | P@L/5               | 0.36 | **0.52** |
+| remote_homology     | Top 1 Accuracy      | 0.21 | **0.26** |
+| secondary_structure | Accuracy (3-class)  | 0.73 | **0.75** |
+| fluorescence        | Spearman's rho      | 0.68 | 0.68 |
+| stability           | Spearman's rho      | 0.73 | **0.77** |
 
 
 # Reference
