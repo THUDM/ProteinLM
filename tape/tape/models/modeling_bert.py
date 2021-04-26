@@ -1,12 +1,9 @@
 # coding=utf-8
+# Copyright (c) 2021, Knowledge Engineering Group (KEG), Tsinghua University
+# Copyright 2019, Song Lab @ Cal.
 # Copyright 2018 The Google AI Language Team Authors and The HuggingFace Inc. team.
 # Copyright (c) 2018, NVIDIA CORPORATION.  All rights reserved.
-
-# BAAI: Large Scale Protein-Pretrain
 # Modified by Yijia Xiao
-# Modification:
-# Decoupled `bert layer` into four modules (input_ln, attention, post_attn_ln, ffn_layer);
-# decoupled protein bert.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
