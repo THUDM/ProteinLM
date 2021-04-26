@@ -1,11 +1,8 @@
 data/
 logs/
 results/
-mylogs/
 wandb/
 scratch/
-models/
-own/
 .idea/
 # Byte-compiled / optimized / DLL files
 __pycache__/
