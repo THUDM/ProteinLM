@@ -1,7 +1,6 @@
 # ProteinLM
 
-`Protein Language Model`
-
+We pretrain protein language model based on Megatron-LM framework, and then evaluate the pretrained model results on TAPE (Tasks Assessing Protein Embeddings), which contains a set of five biologically relevant semi-supervised learning tasks. And our pretrained model achieved good performance on these tasks.
 
 # Overview
 
