@@ -53,6 +53,10 @@ Detailed explanations are given in each folder's readme.
 | stability           | Spearman's rho      | 0.73 | **0.77** |
 
 
+# Contact
+If you have any problem using ProteinLM, feel free to contact [us](mailto:xiaoyiji18@mails.tsinghua.edu.cn).
+
+
 # Reference
 
 Our work is based on the following papers.
