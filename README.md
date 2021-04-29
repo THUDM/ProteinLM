@@ -8,6 +8,7 @@ The proposal of pre-training models such as Bert have greatly promoted the devel
 
 
 # Guidance
+We provide pretrain and finetune code in two separate folders. If you use the pretrained model we provide, you can simply download the checkpoint and follow the finetune guide. If you want to pretrain your own model yourself, you can refer to the pretrain guide.
 - Pretrain [README](./pretrain/README.md)
 - Finetune [README](./tape/README.md)
 

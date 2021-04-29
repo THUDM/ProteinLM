@@ -11,7 +11,6 @@
   - [Protein Bert Model](#protein-bert-model)
       - [Basic Blocks](#basic-blocks)
       - [Residual Connections](#residual-connections)
-    - [Pretrain Details](#pretrain-details)
   - [Downstream Tasks Performance](#downstream-tasks-performance)
   - [Reference](#reference)
 
@@ -95,18 +94,15 @@ We modified layer structure in [modeling_bert.py](./tape/models/modeling_bert.py
 - res2: connection2 start - (`POST_ATTN_LAYERNORM`, `FFN`) - connection2 end.
 
 
-### Pretrain Details
-
-
 ## Downstream Tasks Performance
 
-| Task | Metric | Performance |
-|:-:|:-:|:-:|
-| contact prediction  | P@L/5               | 0.52 |
-| remote_homology     | Top 1 Accuracy      | 0.26 |
-| secondary_structure | Accuracy (3-class)  | 0.75 |
-| fluorescence        | Spearman's rho      | 0.68 |
-| stability           | Spearman's rho      | 0.77 |
+| Task | Metric | TAPE Transformer | ProteinLM (ours) |
+|:-:|:-:|:-:|:-:|
+| contact prediction  | P@L/5               | 0.36 | **0.52** |
+| remote_homology     | Top 1 Accuracy      | 0.21 | **0.26** |
+| secondary_structure | Accuracy (3-class)  | 0.73 | **0.75** |
+| fluorescence        | Spearman's rho      | 0.68 | 0.68 |
+| stability           | Spearman's rho      | 0.73 | **0.77** |
 
 
 
