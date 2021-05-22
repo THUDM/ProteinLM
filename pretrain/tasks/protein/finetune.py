@@ -36,15 +36,15 @@ def protein_classification(num_classes, Dataset,
             # Determine model based on position of stage in pipeline.
             if mpu.is_pipeline_first_stage():
                 model = ClassificationFirstStage(
-                    num_classes=num_classes, num_tokentypes=2)
+                    num_classes=num_classes, num_tokentypes=0)
             elif mpu.is_pipeline_last_stage():
                 model = ClassificationLastStage(
-                    num_classes=num_classes, num_tokentypes=2)
+                    num_classes=num_classes, num_tokentypes=0)
             else:
                 model = ClassificationIntermediateStage(
-                    num_classes=num_classes, num_tokentypes=2)
+                    num_classes=num_classes, num_tokentypes=0)
         else:
-            model = Classification(num_classes=num_classes, num_tokentypes=2)
+            model = Classification(num_classes=num_classes, num_tokentypes=0)
 
         return model
 
@@ -69,6 +69,8 @@ def main():
     if args.task == 'remote_homology':
         num_classes = 1195
         from tasks.protein.remote_homology import RemoteHomologyDataset as Dataset
+        def name_from_datapath(datapath):
+            return 'remote_homology'
     elif args.task == 'family_accession':
         num_classes = 17929
         # TODO: add family accession
@@ -77,4 +79,4 @@ def main():
         raise NotImplementedError('Protein task {} is not implemented.'.format(
             args.task))
 
-    protein_classification(num_classes, Dataset)
+    protein_classification(num_classes, Dataset, name_from_datapath)

@@ -1,3 +1,6 @@
+import time
+import lmdb
+import pickle as pkl
 from abc import ABC
 from abc import abstractmethod
 
@@ -20,11 +23,11 @@ def process_samples_from_single_lmdb_path(datapath):
             item = pkl.loads(txn.get(str(index).encode()))
             if 'id' not in item:
                 item['id'] = str(index)
+            item['primary'] = " ".join(item['primary'])
             cache.append(item)
     elapsed_time = time.time() - start_time
-    print_rank_0('    > processed {} document, {} questions, and {} samples'
-                 ' in {:.2f} seconds'.format(num_docs, num_questions,
-                                             num_samples, elapsed_time))
+    print_rank_0('    > processed {} samples'
+                 ' in {:.2f} seconds'.format(num_examples, elapsed_time))
     return cache
 
 class ProteinPredictionAbstractDataset(ABC, Dataset):
