@@ -20,7 +20,7 @@ class RemoteHomologyDataset(ProteinPredictionAbstractDataset):
         super().__init__(task_name, dataset_name, datapaths, tokenizer, max_seq_length)
 
 
-    def build_sample(ids, types, paddings, label, unique_id):
+    def build_samples(ids, types, paddings, label, unique_id):
     """Convert to numpy and return a sample consumed by the batch producer."""
 
         ids_np = np.array(ids, dtype=np.int64)
