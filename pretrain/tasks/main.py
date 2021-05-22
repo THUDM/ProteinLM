@@ -62,6 +62,8 @@ if __name__ == '__main__':
         from glue.finetune import main
     elif args.task in ['LAMBADA', 'WIKITEXT103']:
         from zeroshot_gpt2.evaluate import main
+    elif args.task in ['remote_homology']:
+        from protein.finetune import main
     else:
         raise NotImplementedError('Task {} is not implemented.'.format(
             args.task))
