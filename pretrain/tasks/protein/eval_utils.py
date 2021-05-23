@@ -6,6 +6,7 @@ import time
 import torch
 
 from megatron import get_args
+from megatrom import get_tokenizer
 from megatron import print_rank_last, is_last_rank
 from megatron import mpu
 from megatron.training import communicate
@@ -79,6 +80,9 @@ def calculate_correct_answers(name, model, dataloader,
         for _, batch in enumerate(dataloader):
             # Run the model forward.
             tokens, labels_, attention_mask = process_batch(batch)
+            if labels_.dim() == 2:
+                assert torch.all(labels_[tokens == tokenizer.cls] == -1)
+                assert torch.all(labels_[tokens == tokenizer.pad] == -1)
 
             # For evaluation only mode we use drop_last = False to get all the
             # samples, which means we might not have a full batch, so we
@@ -118,9 +122,14 @@ def calculate_correct_answers(name, model, dataloader,
                     ids.extend(batch['uid'].cpu().numpy().tolist())
                 # Compute the correct answers.
                 predicted = torch.argmax(logits, dim=-1)
-                corrects = (predicted == labels_)
+                labels_flat = labels_.contiguous().view(-1)
+                predicted_actual = predicted[labels_flat != -1]
+                labels_actual = labels_flat[labels_flat != -1]
+                #corrects = (predicted == labels_)
+                corrects = (predicted_actual == labels_actual)
                 # Add to the counters.
-                total += labels_.size(0)
+                #total += labels_.size(0)
+                total += labels_actual.size(0)
                 correct += corrects.sum().item()
             else:
                 communicate(
