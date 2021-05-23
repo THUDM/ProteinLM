@@ -29,8 +29,7 @@ class RemoteHomologyDataset(ProteinPredictionAbstractDataset):
     def __getitem__(self, index: int):
         item = self.samples[index]
         ids, paddings, seq_len = build_tokens_paddings_from_text(
-            item['primary'], None,
-            self.tokenizer, self.max_seq_length)
+            item['primary'], self.tokenizer, self.max_seq_length)
         seq_len = min(seq_len + 1, self.max_seq_length)
         sample = self.build_samples(ids, paddings, item['fold_label'], item['uid'], seq_len)
         return sample
