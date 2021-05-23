@@ -8,7 +8,7 @@ from torch.utils.data import Dataset
 
 from megatron import print_rank_0
 
-def process_samples_from_single_lmdb_path(datapath):
+def process_samples_from_single_lmdb_path(datapath, base=0):
     print_rank_0('   > working on {}'.format(datapath))
     start_time = time.time()
     env = lmdb.open(str(datapath), max_readers=1, readonly=True,
@@ -22,7 +22,9 @@ def process_samples_from_single_lmdb_path(datapath):
         with env.begin(write=False) as txn:
             item = pkl.loads(txn.get(str(index).encode()))
             if 'id' not in item:
-                item['id'] = str(index)
+                item['id'] = str(base+index)
+            item['uid'] = base+index
+            item['seq_len'] = len(item['primary'])
             item['primary'] = " ".join(item['primary'])
             cache.append(item)
     elapsed_time = time.time() - start_time
@@ -49,7 +51,8 @@ class ProteinPredictionAbstractDataset(ABC, Dataset):
         print_rank_0(string)
         self.samples = []
         for datapath in datapaths:
-            self.samples.extend(process_samples_from_single_lmdb_path(datapath))
+            base = len(self.samples)
+            self.samples.extend(process_samples_from_single_lmdb_path(datapath, base))
         print_rank_0('  >> total number of samples: {}'.format(
             len(self.samples)))
 

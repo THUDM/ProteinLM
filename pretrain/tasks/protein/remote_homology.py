@@ -22,8 +22,7 @@ class RemoteHomologyDataset(ProteinPredictionAbstractDataset):
         """
         super().__init__('remote_homology', name, datapaths, tokenizer, max_seq_length)
 
-
-    def build_samples(self, ids, types, paddings, label, unique_id):
+    def build_samples(self, ids, types, paddings, label, unique_id, seq_len):
         """Convert to numpy and return a sample consumed by the batch producer."""
 
         ids_np = np.array(ids, dtype=np.int64)
@@ -33,7 +32,8 @@ class RemoteHomologyDataset(ProteinPredictionAbstractDataset):
                 'types': types_np,
                 'padding_mask': paddings_np,
                 'label': int(label),
-                'uid': unique_id})
+                'uid': int(unique_id), 
+                'seq_len': int(seq_len)})
 
         return sample
     
@@ -42,6 +42,7 @@ class RemoteHomologyDataset(ProteinPredictionAbstractDataset):
         ids, types, paddings = build_tokens_types_paddings_from_text(
             item['primary'], None,
             self.tokenizer, self.max_seq_length)
-        sample = self.build_samples(ids, types, paddings, item['fold_label'], item['id'])
+        seq_len = min(item['seq_len'] + 2, self.max_seq_length)
+        sample = self.build_samples(ids, types, paddings, item['fold_label'], item['uid'], seq_len)
         return sample
 
