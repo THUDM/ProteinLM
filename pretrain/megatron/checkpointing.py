@@ -61,7 +61,7 @@ def check_checkpoint_args(checkpoint_args):
     _compare('max_position_embeddings')
     _compare('make_vocab_size_divisible_by')
     _compare('padded_vocab_size')
-    _compare('tokenizer_type')
+    #_compare('tokenizer_type')
     if get_checkpoint_version() < 3.0:
         _compare('tensor_model_parallel_size',
                  old_arg_name='model_parallel_size')
