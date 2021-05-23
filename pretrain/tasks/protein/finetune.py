@@ -9,6 +9,7 @@ from megatron import get_tokenizer
 from megatron import mpu
 from megatron.model.classification import Classification, ClassificationFirstStage, ClassificationIntermediateStage, ClassificationLastStage
 from tasks.protein.eval_utils import accuracy_func_provider
+from tasks.protein.finetune_utils import protein_classification_forward_step
 from tasks.finetune_utils import finetune
 
 def protein_classification(num_classes, Dataset,
