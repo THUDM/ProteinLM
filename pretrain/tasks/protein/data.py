@@ -42,7 +42,7 @@ def build_tokens_paddings_from_ids(text_ids, max_seq_length, cls_id, pad_id):
     paddings = paddings[:max_seq_length]
     return ids, paddings, len_text
 
-def process_samples_from_single_lmdb_path(datapath, base=0):
+def process_samples_from_single_lmdb_path(datapath, base=0, max_seq_length=512):
     print_rank_0('   > working on {}'.format(datapath))
     start_time = time.time()
     env = lmdb.open(str(datapath), max_readers=1, readonly=True,
@@ -52,6 +52,7 @@ def process_samples_from_single_lmdb_path(datapath, base=0):
         num_examples = pkl.loads(txn.get(b'num_examples'))
 
     cache = []
+    skipped = 0
     for index in range(num_examples):
         with env.begin(write=False) as txn:
             item = pkl.loads(txn.get(str(index).encode()))
@@ -60,10 +61,14 @@ def process_samples_from_single_lmdb_path(datapath, base=0):
             item['uid'] = base+index
             item['seq_len'] = len(item['primary'])
             item['primary'] = " ".join(item['primary'])
-            cache.append(item)
+            if item['seq_len'] <= max_seq_length-1:
+                # -1 for [CLS] token 
+                cache.append(item)
+            else:
+                skipped += 1
     elapsed_time = time.time() - start_time
-    print_rank_0('    > processed {} samples'
-                 ' in {:.2f} seconds'.format(num_examples, elapsed_time))
+    print_rank_0('    > processed {} samples, skipped {} samples longer than {},'
+                 ' in {:.2f} seconds'.format(num_examples, skipped, max_seq_length, elapsed_time))
     return cache
 
 class ProteinPredictionAbstractDataset(ABC, Dataset):
@@ -86,7 +91,7 @@ class ProteinPredictionAbstractDataset(ABC, Dataset):
         self.samples = []
         for datapath in datapaths:
             base = len(self.samples)
-            self.samples.extend(process_samples_from_single_lmdb_path(datapath, base))
+            self.samples.extend(process_samples_from_single_lmdb_path(datapath, base, max_seq_length))
         print_rank_0('  >> total number of samples: {}'.format(
             len(self.samples)))
 
