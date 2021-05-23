@@ -38,6 +38,8 @@ def build_tokens_paddings_from_ids(text_ids, max_seq_length, cls_id, pad_id):
         ids.extend([pad_id] * padding_length)
         paddings.extend([0] * padding_length)
 
+    ids = ids[:max_seq_length]
+    paddings = paddings[:max_seq_length]
     return ids, paddings, len_text
 
 def process_samples_from_single_lmdb_path(datapath, base=0):
