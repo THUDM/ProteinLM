@@ -34,7 +34,7 @@ class TokenClassificationBase(MegatronModule):
         # Multi-choice head.
         if mpu.is_pipeline_last_stage():
             self.classification_head = torch.nn.Sequential(
-                get_linear_layer(args.hidden_size, args.hidden_dropout, init_method),
+                get_linear_layer(args.hidden_size, args.hidden_size, init_method),
                 torch.nn.Tanh(),
                 torch.nn.Dropout(args.hidden_dropout),
                 get_linear_layer(args.hidden_size, self.num_classes, init_method)
@@ -97,12 +97,12 @@ class TokenClassificationBase(MegatronModule):
 class TokenClassification(TokenClassificationBase):
 
     def __init__(self, num_classes, num_tokentypes=2):
-        super(Classification, self).__init__(
+        super(TokenClassification, self).__init__(
             num_classes, num_tokentypes=num_tokentypes)
 
     def forward(self, input_ids, attention_mask,
                 tokentype_ids=None):
-        return super(Classification, self).forward(
+        return super(TokenClassification, self).forward(
             input_ids,
             attention_mask,
             tokentype_ids=tokentype_ids)

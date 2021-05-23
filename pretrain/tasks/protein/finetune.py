@@ -10,7 +10,7 @@ from megatron import mpu
 from megatron.model.classification import Classification, ClassificationFirstStage, ClassificationIntermediateStage, ClassificationLastStage
 from megatron.model.token_classification import TokenClassification, TokenClassificationFirstStage, TokenClassificationIntermediateStage, TokenClassificationLastStage
 from tasks.protein.eval_utils import accuracy_func_provider
-from tasks.protein.finetune_utils import proptein_classification_forward_step
+from tasks.protein.finetune_utils import protein_classification_forward_step
 from tasks.protein.finetune_utils import amino_acid_classification_forward_step
 from tasks.finetune_utils import finetune
 

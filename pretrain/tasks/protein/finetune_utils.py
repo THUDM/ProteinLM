@@ -1,6 +1,7 @@
 import torch
 from megatron import get_args
 from megatron import get_timers
+from megatron import get_tokenizer
 from megatron import mpu
 from megatron.utils import average_losses_across_data_parallel_group
 
@@ -17,6 +18,8 @@ def process_batch(batch):
         attention_mask = attention_mask.half()
     tokens = tokens[:, :max_seq_len]
     attention_mask = attention_mask[:, :max_seq_len]
+    if labels.dim() == 2:
+        labels = labels[:, :max_seq_len]
     return tokens, labels, attention_mask
 
 
@@ -57,6 +60,7 @@ def protein_classification_forward_step(batch, model, input_tensor):
 def amino_acid_classification_forward_step(batch, model, input_tensor):
     """Simple forward step with cross-entropy loss for protein classification."""
     timers = get_timers()
+    tokenizer = get_tokenizer()
 
     # Get the batch.
     timers('batch-generator').start()
@@ -82,7 +86,7 @@ def amino_acid_classification_forward_step(batch, model, input_tensor):
 
         # Cross-entropy loss.
         loss_func = torch.nn.CrossEntropyLoss(ignore_index=-1)
-        loss = loss_func(logits.contiguous().float(), labels)
+        loss = loss_func(logits.contiguous().float(), labels.contiguous().view(-1))
 
         # Reduce loss for logging.
         averaged_loss = average_losses_across_data_parallel_group([loss])
