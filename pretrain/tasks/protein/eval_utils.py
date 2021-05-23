@@ -6,7 +6,7 @@ import time
 import torch
 
 from megatron import get_args
-from megatrom import get_tokenizer
+from megatron import get_tokenizer
 from megatron import print_rank_last, is_last_rank
 from megatron import mpu
 from megatron.training import communicate
@@ -64,6 +64,7 @@ def calculate_correct_answers(name, model, dataloader,
     """Calculate correct over total answers and return prediction if the
     `output_predictions` is true."""
     args = get_args()
+    tokenizer = get_tokenizer()
     start_time = time.time()
     model.eval()
     saved_batch_size = args.micro_batch_size
