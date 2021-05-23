@@ -8,6 +8,38 @@ from torch.utils.data import Dataset
 
 from megatron import print_rank_0
 
+
+def build_tokens_paddings_from_text(text, tokenizer, max_seq_length):
+    """Build token types and paddings, trim if needed, and pad if needed."""
+
+    text_ids = tokenizer.tokenize(text)
+    return build_tokens_paddings_from_ids(text_ids, 
+                                        max_seq_length, tokenizer.cls, tokenizer.pad)
+
+
+def build_tokens_paddings_from_ids(text_ids, max_seq_length, cls_id, pad_id):
+    """Build token types and paddings, trim if needed, and pad if needed."""
+
+    ids = []
+    paddings = []
+
+    # [CLS].
+    ids.append(cls_id)
+    paddings.append(1)
+
+    # A.
+    len_text = len(text_ids)
+    ids.extend(text_ids)
+    paddings.extend([1] * len_text)
+
+    # Padding.
+    padding_length = max_seq_length - len(ids)
+    if padding_length > 0:
+        ids.extend([pad_id] * padding_length)
+        paddings.extend([0] * padding_length)
+
+    return ids, paddings, len_text
+
 def process_samples_from_single_lmdb_path(datapath, base=0):
     print_rank_0('   > working on {}'.format(datapath))
     start_time = time.time()
