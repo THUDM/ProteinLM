@@ -9,9 +9,11 @@ from megatron import get_tokenizer
 from megatron import mpu
 from megatron.model.classification import Classification, ClassificationFirstStage, ClassificationIntermediateStage, ClassificationLastStage
 from megatron.model.token_classification import TokenClassification, TokenClassificationFirstStage, TokenClassificationIntermediateStage, TokenClassificationLastStage
+from megatron.model.token_classification import TokenPairClassification, TokenPairClassificationFirstStage, TokenPairClassificationIntermediateStage, TokenPairClassificationLastStage
 from tasks.protein.eval_utils import accuracy_func_provider
 from tasks.protein.finetune_utils import protein_classification_forward_step
 from tasks.protein.finetune_utils import amino_acid_classification_forward_step
+from tasks.protein.finetune_utils import contact_classification_forward_step
 from tasks.finetune_utils import finetune
 
 def protein_classification(num_classes, Dataset,
@@ -120,7 +122,58 @@ def amino_acid_classification(num_classes, Dataset,
              forward_step=amino_acid_classification_forward_step,
              end_of_epoch_callback_provider=metrics_func_provider)
 
+def contact_prediction(num_classes, Dataset,
+                        name_from_datapath_func):
+    """Secondary Structure Prediction."""
 
+    def train_valid_datasets_provider():
+        """Build train and validation dataset."""
+        args = get_args()
+        tokenizer = get_tokenizer()
+
+        train_dataset = Dataset('training', args.train_data,
+                                tokenizer, args.seq_length)
+        valid_dataset = Dataset('validation', args.valid_data,
+                                tokenizer, args.seq_length)
+
+        return train_dataset, valid_dataset
+
+    def model_provider():
+        """Build the model."""
+        args = get_args()
+
+        print_rank_0('building classification model for {} ...'.format(
+            args.task))
+        if mpu.get_pipeline_model_parallel_world_size() > 1:
+            # Determine model based on position of stage in pipeline.
+            if mpu.is_pipeline_first_stage():
+                model = TokenPairClassificationFirstStage(
+                    num_classes=num_classes, num_tokentypes=0)
+            elif mpu.is_pipeline_last_stage():
+                model = TokenPairClassificationLastStage(
+                    num_classes=num_classes, num_tokentypes=0)
+            else:
+                model = TokenPairClassificationIntermediateStage(
+                    num_classes=num_classes, num_tokentypes=0)
+        else:
+            model = TokenPairClassification(num_classes=num_classes, num_tokentypes=0)
+
+        return model
+
+    def metrics_func_provider():
+        """Privde metrics callback function."""
+        def single_dataset_provider(datapath):
+            args = get_args()
+            tokenizer = get_tokenizer()
+
+            name = name_from_datapath_func(datapath)
+            return Dataset(name, [datapath], tokenizer, args.seq_length)
+        return accuracy_func_provider(single_dataset_provider)
+
+    """Finetune/evaluate."""
+    finetune(train_valid_datasets_provider, model_provider,
+             forward_step=contact_classification_forward_step,
+             end_of_epoch_callback_provider=metrics_func_provider)
 
 def main():
     args = get_args()
@@ -141,6 +194,12 @@ def main():
         def name_from_datapath(datapath):
             return 'secondary_structure'
         amino_acid_classification(num_classes, Dataset, name_from_datapath)
+    elif args.task == 'contact_prediction':
+        num_classes = 2
+        from tasks.protein.contact_prediction import ContactPredictionDataset as Dataset
+        def name_from_datapath(datapath):
+            return 'contact_prediction'
+        contact_prediction(num_classes, Dataset, name_from_datapath)
     else:
         raise NotImplementedError('Protein task {} is not implemented.'.format(
             args.task))
