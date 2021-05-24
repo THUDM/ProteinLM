@@ -4,6 +4,7 @@ from megatron import get_timers
 from megatron import get_tokenizer
 from megatron import mpu
 from megatron.utils import average_losses_across_data_parallel_group
+from tasks.protein.eval_utils import compute_precision_at_l5
 
 def process_batch(batch):
     """Process batch and produce inputs for the model."""
@@ -111,6 +112,7 @@ def contact_classification_forward_step(batch, model, input_tensor):
     except BaseException:
         batch_ = batch
     tokens, labels, attention_mask = process_batch(batch_)
+    seq_len = batch['seq_len'].long().cuda() # include [CLS] at the begining
     timers('batch-generator').stop()
 
     # Forward model.
@@ -128,8 +130,11 @@ def contact_classification_forward_step(batch, model, input_tensor):
         loss_func = torch.nn.CrossEntropyLoss(ignore_index=-1)
         loss = loss_func(logits.contiguous().float(), labels.contiguous().view(-1))
 
+        precision_at_l5 = compute_precision_at_l5(seq_len, logits, labels)
+        
         # Reduce loss for logging.
         averaged_loss = average_losses_across_data_parallel_group([loss])
+        averaged_precision_at_l5 = average_losses_across_data_parallel_group([precision_at_l5])
 
-        return loss, {'lm loss': averaged_loss[0]}
+        return loss, {'lm loss': averaged_loss[0], 'precision_at_l5': averaged_precision_at_l5[0]}
     return output_tensor

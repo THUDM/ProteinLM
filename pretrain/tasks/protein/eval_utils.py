@@ -14,6 +14,23 @@ from tasks.finetune_utils import build_data_loader
 from tasks.protein.finetune_utils import process_batch
 
 
+def compute_precision_at_l5(seq_lens, predictions, labels, ignore_index=-1):
+    with torch.no_grad():
+        valid_masks = (labels != ignore_index)
+        probs = torch.nn.functional.softmax(predictions, dim=-1)[:, :, :, 1]
+        valid_masks = valid_masks.type_as(probs)
+        correct = 0
+        total = 0
+        for seq_len, prob, label, mask in zip(seq_lens, probs, labels, valid_masks):
+            masked_prob = (prob * mask).view(-1)
+            seq_len = seq_len.item() - 1
+            most_likely = masked_prob.topk(seq_len // 5, sorted=False)
+            selected = label.view(-1).gather(0, most_likely.indices)
+            assert torch.all(selected >= 0)
+            correct += selected.sum().float()
+            total += selected.numel()
+        return correct / total
+
 def accuracy_func_provider(single_dataset_provider):
     """Provide function that calculates accuracies."""
     args = get_args()
