@@ -29,7 +29,9 @@ class PairwisePredictionHead(torch.nn.Module):
         lm_output_a = lm_output.unsqueeze(1).expand(-1, seq_len, -1, -1) # b x s x s x h
         lm_output_b = lm_output.unsqueeze(2).expand(-1, -1, seq_len, -1) # b x s x s x h
         pair_emb = torch.cat([lm_output_a, lm_output_b], dim=-1) # b x s x s x (2h)
-        return self.classifier(pair_emb)
+        logits = self.classifier(pair_emb)
+        logits = (logits + logits.transpose(1,2)) / 2.0
+        return logits
 
 
 class TokenPairClassificationBase(MegatronModule):
@@ -72,7 +74,7 @@ class TokenPairClassificationBase(MegatronModule):
             classification_logits = self.classification_head(lm_output)
 
             # Reshape back to separate choices.
-            classification_logits = classification_logits.view(-1, self.num_classes)
+            # classification_logits = classification_logits.view(-1, self.num_classes)
 
             return classification_logits
         return lm_output
