@@ -7,7 +7,7 @@ from abc import abstractmethod
 from torch.utils.data import Dataset
 
 from megatron import print_rank_0
-
+from megatron import get_args
 
 def build_tokens_paddings_from_text(text, tokenizer, max_seq_length):
     """Build token types and paddings, trim if needed, and pad if needed."""
@@ -76,6 +76,7 @@ class ProteinPredictionAbstractDataset(ABC, Dataset):
 
     def __init__(self, task_name, dataset_name, datapaths,
                  tokenizer, max_seq_length):
+        args = get_args()
         # Store inputs.
         self.task_name = task_name
         self.dataset_name = dataset_name
@@ -91,7 +92,7 @@ class ProteinPredictionAbstractDataset(ABC, Dataset):
         self.samples = []
         for datapath in datapaths:
             base = len(self.samples)
-            self.samples.extend(process_samples_from_single_lmdb_path(datapath, base, max_seq_length))
+            self.samples.extend(process_samples_from_single_lmdb_path(datapath, base, args.skip_seq_longer_than))
         print_rank_0('  >> total number of samples: {}'.format(
             len(self.samples)))
 

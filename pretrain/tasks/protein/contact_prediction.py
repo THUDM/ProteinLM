@@ -14,7 +14,7 @@ class ContactPredictionDataset(ProteinPredictionAbstractDataset):
                 max_seq_length: int):
         super().__init__('contact prediction', name, datapaths, tokenizer, max_seq_length)
 
-    def build_samples(self, ids, paddings, label, unique_id, valid_mask, tertiary, seq_len):
+    def build_samples(self, ids, paddings, tertiary, valid_mask, unique_id, seq_len):
         """Convert to numpy and return a sample consumed by the batch producer."""
 
         ids_np = np.array(ids, dtype=np.int64)
@@ -26,10 +26,10 @@ class ContactPredictionDataset(ProteinPredictionAbstractDataset):
         invalid_mask |= np.abs(yind - xind) < 6
         contact_map[invalid_mask] = -1
 
-        contact_map = np.pad(contact_map, ((1, 0), (1, 0), 'constant', constant_values=-1)
+        contact_map = np.pad(contact_map, ((1, 0), (1, 0)), 'constant', constant_values=-1)
         padding_length = self.max_seq_length - contact_map.shape[0]
         if padding_length > 0:
-            contact_map = np.pad(contact_map, ((0, padding_length), (0, padding_length), 'constant', constant_values=-1)
+            contact_map = np.pad(contact_map, ((0, padding_length), (0, padding_length)), 'constant', constant_values=-1)
         contact_map = contact_map[:self.max_seq_length, :self.max_seq_length]
 
         sample = ({'text': ids_np,
@@ -45,6 +45,6 @@ class ContactPredictionDataset(ProteinPredictionAbstractDataset):
         ids, paddings, seq_len = build_tokens_paddings_from_text(
             item['primary'], self.tokenizer, self.max_seq_length)
         seq_len = min(seq_len + 1, self.max_seq_length)
-        sample = self.build_samples(ids, paddings, item['fold_label'], item['uid'], item['valid_mask'], item['tertiary'], seq_len)
+        sample = self.build_samples(ids, paddings, item['tertiary'], item['valid_mask'], item['uid'], seq_len)
         return sample
 

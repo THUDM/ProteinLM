@@ -23,7 +23,7 @@ class PairwisePredictionHead(torch.nn.Module):
             get_linear_layer(args.hidden_size * 2, args.hidden_size, init_method),
             torch.nn.Tanh(),
             torch.nn.Dropout(args.hidden_dropout),
-            get_linear_layer(args.hidden_size, self.num_classes, init_method))
+            get_linear_layer(args.hidden_size, num_classes, init_method))
     def forward(self, lm_output):
         seq_len = lm_output.size(1)
         lm_output_a = lm_output.unsqueeze(1).expand(-1, seq_len, -1, -1) # b x s x s x h

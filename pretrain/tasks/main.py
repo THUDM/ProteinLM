@@ -47,7 +47,8 @@ def get_tasks_args(parser):
                        help='Sliding window for overlapping evaluation.')
     group.add_argument('--strict-lambada', action='store_true',
                        help='Use more difficult formulation of lambada.')
-
+    group.add_argument('--skip-seq-longer-than', type=int, default=2176,
+                       help='Skip sequence longer than a threshold')
     return parser
 
 
@@ -62,7 +63,7 @@ if __name__ == '__main__':
         from glue.finetune import main
     elif args.task in ['LAMBADA', 'WIKITEXT103']:
         from zeroshot_gpt2.evaluate import main
-    elif args.task in ['remote_homology', 'secondary_structure']:
+    elif args.task in ['remote_homology', 'secondary_structure', 'contact_prediction']:
         from protein.finetune import main
     else:
         raise NotImplementedError('Task {} is not implemented.'.format(
