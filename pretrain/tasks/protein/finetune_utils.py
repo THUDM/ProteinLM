@@ -5,7 +5,7 @@ from megatron import get_tokenizer
 from megatron import mpu
 from megatron.utils import average_losses_across_data_parallel_group
 
-def compute_precision_at_l5(seq_lens, predictions, labels, ignore_index=-1):
+def compute_precision_at_l5(seq_lens, predictions, labels, ignore_index=-1, return_precision=True):
     with torch.no_grad():
         valid_masks = (labels != ignore_index)
         probs = torch.nn.functional.softmax(predictions, dim=-1)[:, :, :, 1]
@@ -18,9 +18,12 @@ def compute_precision_at_l5(seq_lens, predictions, labels, ignore_index=-1):
             most_likely = masked_prob.topk(seq_len // 5, sorted=False)
             selected = label.view(-1).gather(0, most_likely.indices)
             selected[selected < 0] = 0
-            correct += selected.sum().float()
+            correct += selected.sum().item()
             total += selected.numel()
-        return correct / total
+        if return_precision:
+            return correct / float(total)
+        else:
+            return correct, total
 
 def process_batch(batch):
     """Process batch and produce inputs for the model."""
