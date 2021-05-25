@@ -18,12 +18,12 @@ def compute_precision_at_l5(seq_lens, predictions, labels, ignore_index=-1, retu
             most_likely = masked_prob.topk(seq_len // 5, sorted=False)
             selected = label.view(-1).gather(0, most_likely.indices)
             selected[selected < 0] = 0
-            correct += selected.sum().item()
+            correct += selected.sum().long()
             total += selected.numel()
         if return_precision:
-            return correct / float(total)
+            return correct.float() / total
         else:
-            return correct, total
+            return correct.item(), total
 
 def process_batch(batch):
     """Process batch and produce inputs for the model."""
