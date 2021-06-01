@@ -12,6 +12,15 @@ We provide pretrain and finetune code in two separate folders. If you use the pr
 - Pretrain [README](./pretrain/README.md)
 - Finetune [README](./tape/README.md)
 
+## Download ProteinLM
+### ProteinLM (200M) 
+For the pretrained model with 200 million parameters,
+you can download model checkpoint via [GoogleDrive](https://drive.google.com/file/d/1BkJn_7y7LNWyxntaAPa333jDGIVoTbrs/view?usp=sharing), or [TsinghuaCloud](https://cloud.tsinghua.edu.cn/f/f62bef666bc742ebb7c2/?dl=1).
+
+### ProteinLM (3B) 
+For the pretrained model with 3 billion parameters,
+you can download model checkpoint from [here](https://resource.wudaoai.cn/).
+
 
 # Project Structure
 ```
@@ -44,13 +53,13 @@ Detailed explanations are given in each folder's readme.
 
 # Downstream Tasks Performance
 
-| Task | Metric | TAPE Transformer | ProteinLM (ours) |
-|:-:|:-:|:-:|:-:|
-| contact prediction  | P@L/5               | 0.36 | **0.52** |
-| remote_homology     | Top 1 Accuracy      | 0.21 | **0.26** |
-| secondary_structure | Accuracy (3-class)  | 0.73 | **0.75** |
-| fluorescence        | Spearman's rho      | 0.68 | 0.68 |
-| stability           | Spearman's rho      | 0.73 | **0.77** |
+| Task | Metric | TAPE | ProteinLM (200M) | ProteinLM (3B) |  
+|:-:|:-:|:-:|:-:|:-:|
+| contact prediction  | P@L/5               | 0.36 | 0.52 | **0.75** |
+| remote homology     | Top 1 Accuracy      | 0.21 | 0.26 | **0.30** |
+| secondary structure | Accuracy (3-class)  | 0.73 | 0.75 | **0.79** |
+| fluorescence        | Spearman's rho      | 0.68 | 0.68 | 0.68 |
+| stability           | Spearman's rho      | 0.73 | 0.77 | **0.79** |
 
 
 # Contact
