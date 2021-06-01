@@ -384,10 +384,11 @@ class TransformerLanguageModelBase(MegatronModule):
 
         # Pooler.
         if mpu.is_pipeline_last_stage() and self.add_pooler:
-            assert 'pooler' in state_dict, \
-                'could not find data for pooler in the checkpoint'
-            self.pooler.load_state_dict(state_dict[self._pooler_key],
-                                        strict=strict)
+            #assert 'pooler' in state_dict, \
+            #    'could not find data for pooler in the checkpoint'
+            if 'pooler' in state_dict:
+                self.pooler.load_state_dict(state_dict[self._pooler_key],
+                                            strict=strict)
 
 
 class TransformerLanguageModel(TransformerLanguageModelBase):

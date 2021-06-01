@@ -28,7 +28,15 @@ To use this repository, please install the latest supported versions of PyTorch 
 
 
 ## Downloading Pretrained Models
-We have provided pretrained protein model. You can download model checkpoint via [GoogleDrive](https://drive.google.com/file/d/1BkJn_7y7LNWyxntaAPa333jDGIVoTbrs/view?usp=sharing), or [TsinghuaCloud](https://cloud.tsinghua.edu.cn/f/f62bef666bc742ebb7c2/?dl=1).
+We have provided pretrained protein model. 
+
+### ProteinLM (200M) 
+You can download model checkpoint via [GoogleDrive](https://drive.google.com/file/d/1BkJn_7y7LNWyxntaAPa333jDGIVoTbrs/view?usp=sharing), or [TsinghuaCloud](https://cloud.tsinghua.edu.cn/f/f62bef666bc742ebb7c2/?dl=1).
+
+### ProteinLM (3B) 
+For the pretrained model with 3 billion parameters,
+you can download model checkpoint from [here](https://resource.wudaoai.cn/).
+ 
 
 
 The models require vocabulary files to run, we use IUPAC vocab, provided in text format [iupac_vocab.txt](./protein_tools/iupac_vocab.txt). There are 20 capital letters representing 20 kinds of amino acids, and 5 special tokens, which are commonly used in natural language processing: `[PAD], [MASK], [CLS], [SEP], [UNK]`).
