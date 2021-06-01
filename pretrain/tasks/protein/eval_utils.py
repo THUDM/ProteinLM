@@ -12,24 +12,7 @@ from megatron import mpu
 from megatron.training import communicate
 from tasks.finetune_utils import build_data_loader
 from tasks.protein.finetune_utils import process_batch
-
-
-def compute_precision_at_l5(seq_lens, predictions, labels, ignore_index=-1):
-    with torch.no_grad():
-        valid_masks = (labels != ignore_index)
-        probs = torch.nn.functional.softmax(predictions, dim=-1)[:, :, :, 1]
-        valid_masks = valid_masks.type_as(probs)
-        correct = 0
-        total = 0
-        for seq_len, prob, label, mask in zip(seq_lens, probs, labels, valid_masks):
-            masked_prob = (prob * mask).view(-1)
-            seq_len = seq_len.item() - 1
-            most_likely = masked_prob.topk(seq_len // 5, sorted=False)
-            selected = label.view(-1).gather(0, most_likely.indices)
-            assert torch.all(selected >= 0)
-            correct += selected.sum().float()
-            total += selected.numel()
-        return correct / total
+from tasks.protein.finetune_utils import compute_precision_at_l5
 
 def accuracy_func_provider(single_dataset_provider):
     """Provide function that calculates accuracies."""
@@ -98,6 +81,7 @@ def calculate_correct_answers(name, model, dataloader,
         for _, batch in enumerate(dataloader):
             # Run the model forward.
             tokens, labels_, attention_mask = process_batch(batch)
+            seq_len = batch['seq_len']
             if labels_.dim() == 2:
                 assert torch.all(labels_[tokens == tokenizer.cls] == -1)
                 assert torch.all(labels_[tokens == tokenizer.pad] == -1)
@@ -138,17 +122,27 @@ def calculate_correct_answers(name, model, dataloader,
                         logits.float()).data.cpu().numpy().tolist())
                     labels.extend(labels_.data.cpu().numpy().tolist())
                     ids.extend(batch['uid'].cpu().numpy().tolist())
-                # Compute the correct answers.
-                predicted = torch.argmax(logits, dim=-1)
-                labels_flat = labels_.contiguous().view(-1)
-                predicted_actual = predicted[labels_flat != -1]
-                labels_actual = labels_flat[labels_flat != -1]
-                #corrects = (predicted == labels_)
-                corrects = (predicted_actual == labels_actual)
-                # Add to the counters.
-                #total += labels_.size(0)
-                total += labels_actual.size(0)
-                correct += corrects.sum().item()
+
+                if labels_.dim() == 3:
+                    # contact prediction
+                    res = compute_precision_at_l5(seq_len,
+                            logits.contiguous(),
+                            labels_.contiguous(),
+                            return_precision=False)
+                    correct += res[0]
+                    total += res[1]
+                else:
+                    # Compute the correct answers.
+                    predicted = torch.argmax(logits, dim=-1).view(-1)
+                    labels_flat = labels_.contiguous().view(-1)
+                    predicted_actual = predicted[labels_flat != -1]
+                    labels_actual = labels_flat[labels_flat != -1]
+                    #corrects = (predicted == labels_)
+                    corrects = (predicted_actual == labels_actual)
+                    # Add to the counters.
+                    #total += labels_.size(0)
+                    total += labels_actual.size(0)
+                    correct += corrects.sum().item()
             else:
                 communicate(
                     tensor_send_next=output_tensor,

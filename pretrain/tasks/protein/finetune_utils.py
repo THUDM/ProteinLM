@@ -4,7 +4,26 @@ from megatron import get_timers
 from megatron import get_tokenizer
 from megatron import mpu
 from megatron.utils import average_losses_across_data_parallel_group
-from tasks.protein.eval_utils import compute_precision_at_l5
+
+def compute_precision_at_l5(seq_lens, predictions, labels, ignore_index=-1, return_precision=True):
+    with torch.no_grad():
+        valid_masks = (labels != ignore_index)
+        probs = torch.nn.functional.softmax(predictions, dim=-1)[:, :, :, 1]
+        valid_masks = valid_masks.type_as(probs)
+        correct = 0
+        total = 0
+        for seq_len, prob, label, mask in zip(seq_lens, probs, labels, valid_masks):
+            masked_prob = (prob * mask).view(-1)
+            seq_len = seq_len.item() - 1 # -1 because of the [CLS]
+            most_likely = masked_prob.topk(seq_len // 5, sorted=False)
+            selected = label.view(-1).gather(0, most_likely.indices)
+            selected[selected < 0] = 0
+            correct += selected.sum().long()
+            total += selected.numel()
+        if return_precision:
+            return correct.float() / total
+        else:
+            return correct.item(), total
 
 def process_batch(batch):
     """Process batch and produce inputs for the model."""
@@ -112,7 +131,7 @@ def contact_classification_forward_step(batch, model, input_tensor):
     except BaseException:
         batch_ = batch
     tokens, labels, attention_mask = process_batch(batch_)
-    seq_len = batch['seq_len'].long().cuda() # include [CLS] at the begining
+    seq_len = batch_['seq_len'].long().cuda() # include [CLS] at the begining
     timers('batch-generator').stop()
 
     # Forward model.
@@ -125,10 +144,12 @@ def contact_classification_forward_step(batch, model, input_tensor):
 
     if mpu.is_pipeline_last_stage():
         logits = output_tensor
+        logits = logits.contiguous()
+        labels = labels.contiguous()
 
         # Cross-entropy loss.
         loss_func = torch.nn.CrossEntropyLoss(ignore_index=-1)
-        loss = loss_func(logits.contiguous().float(), labels.contiguous().view(-1))
+        loss = loss_func(logits.view(-1, 2).float(), labels.view(-1))
 
         precision_at_l5 = compute_precision_at_l5(seq_len, logits, labels)
         
