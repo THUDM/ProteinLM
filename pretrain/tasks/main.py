@@ -65,6 +65,9 @@ if __name__ == '__main__':
         from zeroshot_gpt2.evaluate import main
     elif args.task in ['remote_homology', 'secondary_structure', 'contact_prediction']:
         from protein.finetune import main
+    # regression tasks
+    elif args.task in ['stability', 'fluorescence']:
+        from protein.finetune import main
     else:
         raise NotImplementedError('Task {} is not implemented.'.format(
             args.task))
