@@ -13,6 +13,7 @@ from megatron import mpu
 from megatron.training import communicate
 from tasks.finetune_utils import build_data_loader
 from tasks.protein.finetune_utils import process_batch
+from tasks.protein.finetune_utils import process_batch_regression
 
 
 def accuracy_func_provider(single_dataset_provider):
@@ -132,7 +133,7 @@ def calculate_correct_spearsonr(name, model, dataloader,
 
         for _, batch in enumerate(dataloader):
             # Run the model forward.
-            tokens, labels_, attention_mask = process_batch(batch, is_classification=False)
+            tokens, labels_, attention_mask = process_batch_regression(batch)
             if labels_.dim() == 2:
                 assert torch.all(labels_[tokens == tokenizer.cls] == -1)
                 assert torch.all(labels_[tokens == tokenizer.pad] == -1)
@@ -218,7 +219,7 @@ def calculate_correct_pearson(name, model, dataloader,
             assert mpu.get_data_parallel_world_size() == 1
         for _, batch in enumerate(dataloader):
             # Run the model forward.
-            tokens, labels_, attention_mask = process_batch(batch, is_classification=False)
+            tokens, labels_, attention_mask = process_batch_regression(batch)
             if labels_.dim() == 2:
                 assert torch.all(labels_[tokens == tokenizer.cls] == -1)
                 assert torch.all(labels_[tokens == tokenizer.pad] == -1)
@@ -318,7 +319,7 @@ def calculate_correct_answers(name, model, dataloader,
             ids = []
         for _, batch in enumerate(dataloader):
             # Run the model forward.
-            tokens, labels_, attention_mask = process_batch(batch, is_classification=False)
+            tokens, labels_, attention_mask = process_batch(batch)
             if labels_.dim() == 2:
                 assert torch.all(labels_[tokens == tokenizer.cls] == -1)
                 assert torch.all(labels_[tokens == tokenizer.pad] == -1)

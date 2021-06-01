@@ -5,14 +5,33 @@ from megatron import get_tokenizer
 from megatron import mpu
 from megatron.utils import average_losses_across_data_parallel_group
 
-def process_batch(batch, is_classification=True):
+def process_batch(batch):
+    """Process batch and produce inputs for the model."""
+    args = get_args()
+
+    tokens = batch['text'].long().cuda().contiguous()
+    labels = batch['label'].long().cuda().contiguous()
+    attention_mask = batch['padding_mask'].float().cuda().contiguous()
+    max_seq_len = batch['seq_len'].long().max().item()
+    max_seq_len = (max_seq_len + 127) // 128 * 128
+    if args.fp16:
+        attention_mask = attention_mask.half()
+    tokens = tokens[:, :max_seq_len]
+    attention_mask = attention_mask[:, :max_seq_len]
+    if labels.dim() == 2:
+        # amino acid prediction
+        labels = labels[:, :max_seq_len]
+    elif labels.dim() == 3:
+        # contact prediction
+        labels = labels[:, :max_seq_len, :max_seq_len]
+    return tokens, labels, attention_mask
+
+
+def process_batch_regression(batch):
     """Process batch and produce inputs for the model."""
     args = get_args()
     tokens = batch['text'].long().cuda().contiguous()
-    if is_classification:
-        labels = batch['label'].long().cuda().contiguous()
-    else:
-        labels = batch['label'].cuda().contiguous()
+    labels = batch['label'].cuda().contiguous()
     attention_mask = batch['padding_mask'].float().cuda().contiguous()
     max_seq_len = batch['seq_len'].long().max().item()
     max_seq_len = (max_seq_len + 127) // 128 * 128
