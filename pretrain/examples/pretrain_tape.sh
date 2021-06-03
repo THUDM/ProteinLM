@@ -5,7 +5,7 @@ WORLD_SIZE=1
 DATA_PATH=<Specify path and file prefix>_text_document
 CHECKPOINT_PATH=<Specify path>
 
-rm -rf $CHECKPOINT_PATH
+mkdir -p $CHECKPOINT_PATH
 
 python pretrain_tape.py \
        --num-layers 12 \

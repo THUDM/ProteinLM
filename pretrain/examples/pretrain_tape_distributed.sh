@@ -14,7 +14,6 @@ WORLD_SIZE=$(($GPUS_PER_NODE*$NNODES))
 
 DATA_PATH=<Specify path and file prefix>_text_document
 CHECKPOINT_PATH=<Specify path>
-rm -rf $CHECKPOINT_PATH
 mkdir -p $CHECKPOINT_PATH
 
 DISTRIBUTED_ARGS="--nproc_per_node $GPUS_PER_NODE --nnodes $NNODES --node_rank $NODE_RANK --master_addr $MASTER_ADDR --master_port $MASTER_PORT"
