@@ -160,6 +160,24 @@ def contact_prediction(num_classes, Dataset,
         else:
             model = TokenPairClassification(num_classes=num_classes, num_tokentypes=0)
 
+        return model
+
+    def metrics_func_provider():
+        """Privde metrics callback function."""
+        def single_dataset_provider(datapath):
+            args = get_args()
+            tokenizer = get_tokenizer()
+
+            name = name_from_datapath_func(datapath)
+            return Dataset(name, [datapath], tokenizer, args.seq_length)
+        return accuracy_func_provider(single_dataset_provider)
+
+    """Finetune/evaluate."""
+    finetune(train_valid_datasets_provider, model_provider,
+             forward_step=contact_classification_forward_step,
+             end_of_epoch_callback_provider=metrics_func_provider)
+
+
 # regression
 def protein_regression(num_classes, Dataset,
                         name_from_datapath_func):
@@ -183,7 +201,8 @@ def protein_regression(num_classes, Dataset,
         # num_classes = 1
         print(f"number of classes = {num_classes}")
 
-        print_rank_0('building classification model for {} ...'.format(
+        # resue classfication model for regression (remove the softmax and argmax manipulation)
+        print_rank_0('building regression model for {} ...'.format(
             args.task))
         if mpu.get_pipeline_model_parallel_world_size() > 1:
             # Determine model based on position of stage in pipeline.
@@ -209,12 +228,6 @@ def protein_regression(num_classes, Dataset,
 
             name = name_from_datapath_func(datapath)
             return Dataset(name, [datapath], tokenizer, args.seq_length)
-        return accuracy_func_provider(single_dataset_provider)
-
-    """Finetune/evaluate."""
-    finetune(train_valid_datasets_provider, model_provider,
-             forward_step=contact_classification_forward_step,
-             end_of_epoch_callback_provider=metrics_func_provider)
         return spearmanr_func_provider(single_dataset_provider)
 
     """Finetune/evaluate."""
