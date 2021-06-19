@@ -110,7 +110,7 @@ def protein_regression_forward_step(batch, model, input_tensor):
         batch_ = next(batch)
     except BaseException:
         batch_ = batch
-    tokens, labels, attention_mask = process_batch(batch_, False)
+    tokens, labels, attention_mask = process_batch_regression(batch_)
     timers('batch-generator').stop()
     # Forward model.
     if mpu.is_pipeline_first_stage():
