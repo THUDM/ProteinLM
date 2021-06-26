@@ -4,6 +4,8 @@ import numpy as np
 from megatron import print_rank_0
 from .data import ProteinPredictionAbstractDataset
 from .data import build_tokens_paddings_from_text
+from megatron import get_args
+
 
 class SecondaryStructureDataset(ProteinPredictionAbstractDataset):
     def __init__(self,
@@ -38,5 +40,11 @@ class SecondaryStructureDataset(ProteinPredictionAbstractDataset):
         ids, paddings, seq_len = build_tokens_paddings_from_text(
             item['primary'], self.tokenizer, self.max_seq_length)
         seq_len = min(seq_len + 1, self.max_seq_length) # +1 because of the [cls] token
-        sample = self.build_samples(ids, paddings, item['ss3'].tolist(), item['uid'], seq_len)
+        args = get_args()
+        if args.task == 'secondary_structure':
+            sample = self.build_samples(ids, paddings, item['ss3'].tolist(), item['uid'], seq_len)
+        elif args.task == 'ss_q8':
+            sample = self.build_samples(ids, paddings, item['ss3'].tolist(), item['uid'], seq_len)
+        else:
+            raise NotImplementedError('Task dataset {} is not implemented.'.format(args.task))
         return sample

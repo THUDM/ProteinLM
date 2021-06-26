@@ -273,6 +273,12 @@ def main():
         def name_from_datapath(datapath):
             return 'fluorescence'
         protein_regression(num_classes, Dataset, name_from_datapath)
+    elif args.task == 'ss_q8':
+        num_classes = 8 # secondary_structure: Q8 classification
+        from tasks.protein.secondary_structure import SecondaryStructureDataset as Dataset
+        def name_from_datapath(datapath):
+            return 'ss_q8'
+        amino_acid_classification(num_classes, Dataset, name_from_datapath)
  
     else:
         raise NotImplementedError('Protein task {} is not implemented.'.format(
