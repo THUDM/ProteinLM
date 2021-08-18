@@ -109,6 +109,19 @@ These scripts use the PyTorch distributed launcher for distributed training. As 
 If you encounter `timeout` problem when running `pretrain_tape_distributed.sh`, you can set `'timeout'` parameter of `torch.distributed.init_process_group()` to a longer interval.
 
 
+# Citation
+Please cite our paper if you find our work useful for your research. Our paper is can be accessed [here](https://arxiv.org/abs/2108.07435).
+```
+@misc{xiao2021modeling,
+      title={Modeling Protein Using Large-scale Pretrain Language Model}, 
+      author={Yijia Xiao and Jiezhong Qiu and Ziang Li and Chang-Yu Hsieh and Jie Tang},
+      year={2021},
+      eprint={2108.07435},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
+
 
 # Reference
 
