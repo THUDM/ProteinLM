@@ -108,13 +108,10 @@ If you have any problem using ProteinLM, feel free to contact [us](mailto:yijia-
 
 # Reference
 
-Our work is based on the following papers.
-- [Evaluating Protein Transfer Learning with TAPE](https://arxiv.org/abs/1906.08230v1)
-- [Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism](https://arxiv.org/abs/1909.08053v4)
+Our work is based on the following papers. And part of the code is based on [Megatron-LM](https://github.com/NVIDIA/Megatron-LM) and [TAPE](https://github.com/songlab-cal/tape).
 
-Besides, part of the code is based on [Megatron-LM](https://github.com/NVIDIA/Megatron-LM) and [TAPE](https://github.com/songlab-cal/tape).
 
-__Evaluating Protein Transfer Learning with TAPE__
+[__Evaluating Protein Transfer Learning with TAPE__](https://arxiv.org/abs/1906.08230v1)
 ```
 @article{DBLP:journals/corr/abs-1909-08053,
   author    = {Mohammad Shoeybi and
@@ -137,7 +134,8 @@ __Evaluating Protein Transfer Learning with TAPE__
 }
 ```
 
-__Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism__
+
+[__Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism__](https://arxiv.org/abs/1909.08053v4)
 ```
 @article{DBLP:journals/corr/abs-1906-08230,
   author    = {Roshan Rao and

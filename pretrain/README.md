@@ -137,14 +137,9 @@ Please cite our paper if you find our work useful for your research. Our paper i
 
 # Reference
 
-Our work is based on the following papers.
-- [Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism](https://arxiv.org/abs/1909.08053v4)
-- [The Pfam protein families database in 2019](https://academic.oup.com/nar/article/47/D1/D427/5144153)
+Our work is based on the following papers. And part of the code is based on [Megatron-LM](https://github.com/NVIDIA/Megatron-LM).
 
-Besides, part of the code is based on [Megatron-LM](https://github.com/NVIDIA/Megatron-LM).
-
-
-__Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism__
+[__Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism__](https://arxiv.org/abs/1909.08053v4)
 ```
 @article{DBLP:journals/corr/abs-1909-08053,
   author    = {Mohammad Shoeybi and
@@ -168,8 +163,7 @@ __Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Para
 ```
 
 
-
-__The Pfam protein families database in 2019__
+[__The Pfam protein families database in 2019__](https://academic.oup.com/nar/article/47/D1/D427/5144153))
 ```
 @article{pfam,
        author = {El-Gebali, Sara and Mistry, Jaina and Bateman, Alex and Eddy, Sean R and Luciani, Aur{\'{e}}lien and Potter, Simon C and Qureshi, Matloob and Richardson, Lorna J and Salazar, Gustavo A and Smart, Alfredo and Sonnhammer, Erik L L and Hirsh, Layla and Paladin, Lisanna and Piovesan, Damiano and Tosatto, Silvio C E and Finn, Robert D},
