@@ -44,7 +44,7 @@ class SecondaryStructureDataset(ProteinPredictionAbstractDataset):
         if args.task == 'secondary_structure':
             sample = self.build_samples(ids, paddings, item['ss3'].tolist(), item['uid'], seq_len)
         elif args.task == 'ss_q8':
-            sample = self.build_samples(ids, paddings, item['ss3'].tolist(), item['uid'], seq_len)
+            sample = self.build_samples(ids, paddings, item['ss8'].tolist(), item['uid'], seq_len)
         else:
             raise NotImplementedError('Task dataset {} is not implemented.'.format(args.task))
         return sample

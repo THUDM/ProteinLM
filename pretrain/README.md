@@ -7,6 +7,8 @@
 - [Setup](#setup)
   - [Docker Environment](#docker-environment)
   - [Downloading Pretrained Models](#downloading-pretrained-models)
+    - [ProteinLM (200M)](#proteinlm-200m)
+    - [ProteinLM (3B)](#proteinlm-3b)
 - [Usage](#usage)
   - [Data Preprocessing](#data-preprocessing)
     - [Datasets](#datasets)
@@ -14,6 +16,7 @@
   - [Pretraining](#pretraining)
     - [Protein Model Training](#protein-model-training)
     - [Distributed Protein Model Training](#distributed-protein-model-training)
+- [Citation](#citation)
 - [Reference](#reference)
 
 <!-- /TOC -->
@@ -112,13 +115,22 @@ If you encounter `timeout` problem when running `pretrain_tape_distributed.sh`, 
 # Citation
 Please cite our paper if you find our work useful for your research. Our paper is can be accessed [here](https://arxiv.org/abs/2108.07435).
 ```
-@misc{xiao2021modeling,
-      title={Modeling Protein Using Large-scale Pretrain Language Model}, 
-      author={Yijia Xiao and Jiezhong Qiu and Ziang Li and Chang-Yu Hsieh and Jie Tang},
-      year={2021},
-      eprint={2108.07435},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+@article{DBLP:journals/corr/abs-2108-07435,
+  author    = {Yijia Xiao and
+               Jiezhong Qiu and
+               Ziang Li and
+               Chang{-}Yu Hsieh and
+               Jie Tang},
+  title     = {Modeling Protein Using Large-scale Pretrain Language Model},
+  journal   = {CoRR},
+  volume    = {abs/2108.07435},
+  year      = {2021},
+  url       = {https://arxiv.org/abs/2108.07435},
+  eprinttype = {arXiv},
+  eprint    = {2108.07435},
+  timestamp = {Fri, 20 Aug 2021 13:55:54 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-2108-07435.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
 

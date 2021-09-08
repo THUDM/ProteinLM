@@ -1,6 +1,23 @@
 # ProteinLM
 
+
+- [ProteinLM](#proteinlm)
+- [Overview](#overview)
+- [Guidance](#guidance)
+  - [Download ProteinLM](#download-proteinlm)
+    - [ProteinLM (200M)](#proteinlm-200m)
+    - [ProteinLM (3B)](#proteinlm-3b)
+- [Project Structure](#project-structure)
+- [Usage](#usage)
+- [Downstream Tasks Performance](#downstream-tasks-performance)
+- [Citation](#citation)
+- [Contact](#contact)
+- [Reference](#reference)
+
+
 We pretrain protein language model based on Megatron-LM framework, and then evaluate the pretrained model results on TAPE (Tasks Assessing Protein Embeddings), which contains a set of five biologically relevant semi-supervised learning tasks. And our pretrained model achieved good performance on these tasks.
+
+
 
 # Overview
 
@@ -62,8 +79,31 @@ Detailed explanations are given in each folder's readme.
 | stability           | Spearman's rho      | 0.73 | 0.77 | **0.79** |
 
 
+# Citation
+Please cite our paper if you find our work useful for your research. Our paper is can be accessed [here](https://arxiv.org/abs/2108.07435).
+```
+@article{DBLP:journals/corr/abs-2108-07435,
+  author    = {Yijia Xiao and
+               Jiezhong Qiu and
+               Ziang Li and
+               Chang{-}Yu Hsieh and
+               Jie Tang},
+  title     = {Modeling Protein Using Large-scale Pretrain Language Model},
+  journal   = {CoRR},
+  volume    = {abs/2108.07435},
+  year      = {2021},
+  url       = {https://arxiv.org/abs/2108.07435},
+  eprinttype = {arXiv},
+  eprint    = {2108.07435},
+  timestamp = {Fri, 20 Aug 2021 13:55:54 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-2108-07435.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+```
+
+
 # Contact
-If you have any problem using ProteinLM, feel free to contact [us](mailto:xiaoyiji18@mails.tsinghua.edu.cn).
+If you have any problem using ProteinLM, feel free to contact [us](mailto:yijia-xiao@outlook.com).
 
 
 # Reference
