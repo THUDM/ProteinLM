@@ -7,6 +7,8 @@
 - [Setup](#setup)
   - [Docker Environment](#docker-environment)
   - [Downloading Pretrained Models](#downloading-pretrained-models)
+    - [ProteinLM (200M)](#proteinlm-200m)
+    - [ProteinLM (3B)](#proteinlm-3b)
 - [Usage](#usage)
   - [Data Preprocessing](#data-preprocessing)
     - [Datasets](#datasets)
@@ -14,6 +16,7 @@
   - [Pretraining](#pretraining)
     - [Protein Model Training](#protein-model-training)
     - [Distributed Protein Model Training](#distributed-protein-model-training)
+- [Citation](#citation)
 - [Reference](#reference)
 
 <!-- /TOC -->
@@ -109,17 +112,34 @@ These scripts use the PyTorch distributed launcher for distributed training. As 
 If you encounter `timeout` problem when running `pretrain_tape_distributed.sh`, you can set `'timeout'` parameter of `torch.distributed.init_process_group()` to a longer interval.
 
 
+# Citation
+Please cite our paper if you find our work useful for your research. Our paper is can be accessed [here](https://arxiv.org/abs/2108.07435).
+```
+@article{DBLP:journals/corr/abs-2108-07435,
+  author    = {Yijia Xiao and
+               Jiezhong Qiu and
+               Ziang Li and
+               Chang{-}Yu Hsieh and
+               Jie Tang},
+  title     = {Modeling Protein Using Large-scale Pretrain Language Model},
+  journal   = {CoRR},
+  volume    = {abs/2108.07435},
+  year      = {2021},
+  url       = {https://arxiv.org/abs/2108.07435},
+  eprinttype = {arXiv},
+  eprint    = {2108.07435},
+  timestamp = {Fri, 20 Aug 2021 13:55:54 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-2108-07435.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+```
+
 
 # Reference
 
-Our work is based on the following papers.
-- [Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism](https://arxiv.org/abs/1909.08053v4)
-- [The Pfam protein families database in 2019](https://academic.oup.com/nar/article/47/D1/D427/5144153)
+Our work is based on the following papers. And part of the code is based on [Megatron-LM](https://github.com/NVIDIA/Megatron-LM).
 
-Besides, part of the code is based on [Megatron-LM](https://github.com/NVIDIA/Megatron-LM).
-
-
-__Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism__
+[__Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism__](https://arxiv.org/abs/1909.08053v4)
 ```
 @article{DBLP:journals/corr/abs-1909-08053,
   author    = {Mohammad Shoeybi and
@@ -143,8 +163,7 @@ __Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Para
 ```
 
 
-
-__The Pfam protein families database in 2019__
+[__The Pfam protein families database in 2019__](https://academic.oup.com/nar/article/47/D1/D427/5144153))
 ```
 @article{pfam,
        author = {El-Gebali, Sara and Mistry, Jaina and Bateman, Alex and Eddy, Sean R and Luciani, Aur{\'{e}}lien and Potter, Simon C and Qureshi, Matloob and Richardson, Lorna J and Salazar, Gustavo A and Smart, Alfredo and Sonnhammer, Erik L L and Hirsh, Layla and Paladin, Lisanna and Piovesan, Damiano and Tosatto, Silvio C E and Finn, Robert D},

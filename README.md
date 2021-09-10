@@ -1,6 +1,23 @@
 # ProteinLM
 
+
+- [ProteinLM](#proteinlm)
+- [Overview](#overview)
+- [Guidance](#guidance)
+  - [Download ProteinLM](#download-proteinlm)
+    - [ProteinLM (200M)](#proteinlm-200m)
+    - [ProteinLM (3B)](#proteinlm-3b)
+- [Project Structure](#project-structure)
+- [Usage](#usage)
+- [Downstream Tasks Performance](#downstream-tasks-performance)
+- [Citation](#citation)
+- [Contact](#contact)
+- [Reference](#reference)
+
+
 We pretrain protein language model based on Megatron-LM framework, and then evaluate the pretrained model results on TAPE (Tasks Assessing Protein Embeddings), which contains a set of five biologically relevant semi-supervised learning tasks. And our pretrained model achieved good performance on these tasks.
+
+
 
 # Overview
 
@@ -62,19 +79,39 @@ Detailed explanations are given in each folder's readme.
 | stability           | Spearman's rho      | 0.73 | 0.77 | **0.79** |
 
 
+# Citation
+Please cite our paper if you find our work useful for your research. Our paper is can be accessed [here](https://arxiv.org/abs/2108.07435).
+```
+@article{DBLP:journals/corr/abs-2108-07435,
+  author    = {Yijia Xiao and
+               Jiezhong Qiu and
+               Ziang Li and
+               Chang{-}Yu Hsieh and
+               Jie Tang},
+  title     = {Modeling Protein Using Large-scale Pretrain Language Model},
+  journal   = {CoRR},
+  volume    = {abs/2108.07435},
+  year      = {2021},
+  url       = {https://arxiv.org/abs/2108.07435},
+  eprinttype = {arXiv},
+  eprint    = {2108.07435},
+  timestamp = {Fri, 20 Aug 2021 13:55:54 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-2108-07435.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+```
+
+
 # Contact
-If you have any problem using ProteinLM, feel free to contact [us](mailto:xiaoyiji18@mails.tsinghua.edu.cn).
+If you have any problem using ProteinLM, feel free to contact [us](mailto:yijia-xiao@outlook.com).
 
 
 # Reference
 
-Our work is based on the following papers.
-- [Evaluating Protein Transfer Learning with TAPE](https://arxiv.org/abs/1906.08230v1)
-- [Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism](https://arxiv.org/abs/1909.08053v4)
+Our work is based on the following papers. And part of the code is based on [Megatron-LM](https://github.com/NVIDIA/Megatron-LM) and [TAPE](https://github.com/songlab-cal/tape).
 
-Besides, part of the code is based on [Megatron-LM](https://github.com/NVIDIA/Megatron-LM) and [TAPE](https://github.com/songlab-cal/tape).
 
-__Evaluating Protein Transfer Learning with TAPE__
+[__Evaluating Protein Transfer Learning with TAPE__](https://arxiv.org/abs/1906.08230v1)
 ```
 @article{DBLP:journals/corr/abs-1909-08053,
   author    = {Mohammad Shoeybi and
@@ -97,7 +134,8 @@ __Evaluating Protein Transfer Learning with TAPE__
 }
 ```
 
-__Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism__
+
+[__Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism__](https://arxiv.org/abs/1909.08053v4)
 ```
 @article{DBLP:journals/corr/abs-1906-08230,
   author    = {Roshan Rao and
