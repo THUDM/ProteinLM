@@ -103,7 +103,7 @@ Please cite our paper if you find our work useful for your research. Our paper i
 
 
 # Contact
-If you have any problem using ProteinLM, feel free to contact [us](mailto:yijia-xiao@outlook.com).
+If you have any problem using ProteinLM, feel free to contact via [mr.yijia.xiao@gmail.com](mailto:mr.yijia.xiao@gmail.com).
 
 
 # Reference
