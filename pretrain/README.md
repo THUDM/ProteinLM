@@ -57,7 +57,7 @@ We've provided scripts for pretraining TAPE language model: [pretrain_tape.sh](.
 
 ## Data Preprocessing
 ### Datasets
-Our pretraining is carried out on [PFAM](http://s3.amazonaws.com/proteindata/data_pytorch/pfam.tar.gz) dataset. After downloading and extracting the data, you will find the following three folders and one text file `pfam_train.lmdb, pfam_valid.lmdb, pfam_holdout.lmdb, pfam_strings.txt`. What we will use is the text file, which contains 32M animo acids entries. With `pfam_strings.txt` ready, next steps are preprocessing and pretraining.
+Our pretraining is carried out on [PFAM](http://s3.amazonaws.com/songlabdata/proteindata/data_pytorch/pfam.tar.gz) dataset. After downloading and extracting the data, you will find the following three folders and one text file `pfam_train.lmdb, pfam_valid.lmdb, pfam_holdout.lmdb, pfam_strings.txt`. What we will use is the text file, which contains 32M animo acids entries. With `pfam_strings.txt` ready, next steps are preprocessing and pretraining.
 
 Scripts and guidance are available in [protein_tools](./protein_tools/).
 
