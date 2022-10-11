@@ -65,8 +65,8 @@ Scripts and guidance are available in [protein_tools](./protein_tools/).
 The training data requires preprocessing. First, place your training data in a loose json format, with one json containing a text sample per line. For example:
 
 <pre>
-{"text": "GCTVEDRCLIGMGAILLNGCVIGSGSLVAAGALITQ"}
-{"text": "RTIKVRILHAIGFEGGLMLLTIPMVAYAMDMTLFQAILLDLSMTTCILVYTFIFQWCYDILENR"}
+{"text": "G C T V E D R C L I G M G A I L L N G C V I G S G S L V A A G A L I T Q"}
+{"text": "R T I K V R I L H A I G F E G G L M L L T I P M V A Y A M D M T L F Q A I L L D L S M T T C I L V Y T F I F Q W C Y D I L E N R"}
 </pre>
 
 The name of the `text` field of the json can be changed by using the `--json-key` flag in [`preprocess_data.py`](./tools/preprocess_data.py) The other metadata are optional and are not used in training.
